@@ -4,10 +4,7 @@ LABEL maintainer "masahata <buildsville.lab@gmail.com>"
 
 RUN apk add --no-cache tini logrotate
 
-RUN ls -l
-RUN pwd
-
-COPY crontab /etc/crontabs/root
+COPY . /mnt
 
 ENTRYPOINT ["/sbin/tini", "--"]
 
