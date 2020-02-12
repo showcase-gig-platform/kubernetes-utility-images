@@ -25,7 +25,7 @@ jobs:
           ECR_REPO: 'logrotate'
         run: |
           IMAGE_TAG=$(echo ${{ github.ref }} | sed -e "s@refs/tags/release/logrotate/@@g")
-          docker build -t ${{ steps.ecr.outputs.registry }}/$ECR_REPO:$IMAGE_TAG .
+          docker build -t ${{ steps.ecr.outputs.registry }}/$ECR_REPO:$IMAGE_TAG ./logrotate
           docker push ${{ steps.ecr.outputs.registry }}/$ECR_REPO:$IMAGE_TAG
   build-basic-auth:
     runs-on: ubuntu-latest
@@ -48,7 +48,7 @@ jobs:
           ECR_REPO: 'basic-auth'
         run: |
           IMAGE_TAG=$(echo ${{ github.ref }} | sed -e "s@refs/tags/release/basic-auth/@@g")
-          docker build -t ${{ steps.ecr.outputs.registry }}/$ECR_REPO:$IMAGE_TAG .
+          docker build -t ${{ steps.ecr.outputs.registry }}/$ECR_REPO:$IMAGE_TAG ./basic-auth
           docker push ${{ steps.ecr.outputs.registry }}/$ECR_REPO:$IMAGE_TAG
   build-alpine-tini:
     runs-on: ubuntu-latest
@@ -71,5 +71,5 @@ jobs:
           ECR_REPO: 'alpine-tini'
         run: |
           IMAGE_TAG=$(echo ${{ github.ref }} | sed -e "s@refs/tags/release/alpine-tini/@@g")
-          docker build -t ${{ steps.ecr.outputs.registry }}/$ECR_REPO:$IMAGE_TAG .
+          docker build -t ${{ steps.ecr.outputs.registry }}/$ECR_REPO:$IMAGE_TAG ./alpine-tini
           docker push ${{ steps.ecr.outputs.registry }}/$ECR_REPO:$IMAGE_TAG
