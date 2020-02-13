@@ -1,6 +1,7 @@
-# simple-images
+# kubernetes-utility-images
 
 ちょっとしたDockerfile置き場
+解説はそれぞれのreadmeに  
 
 ## image build
 release/[dirname]/[version] というタグを切ってリポジトリにpushするとgithub actionsがimageをビルドしてECRにpushします　　
