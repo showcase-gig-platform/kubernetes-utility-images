@@ -73,3 +73,26 @@ jobs:
           IMAGE_TAG=$(echo ${{ github.ref }} | sed -e "s@refs/tags/release/alpine-tini/@@g")
           docker build -t ${{ steps.ecr.outputs.registry }}/$ECR_REPO:$IMAGE_TAG ./alpine-tini
           docker push ${{ steps.ecr.outputs.registry }}/$ECR_REPO:$IMAGE_TAG
+  build-graceful-nginx:
+    runs-on: ubuntu-latest
+    name: build-graceful-nginx
+    if: contains(github.ref, 'release/graceful-nginx')
+    steps:
+      - name: checkout
+        uses: actions/checkout@v1
+      - name: aws configure
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-1
+      - name: login ecr
+        id: ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      - name: build and push
+        env:
+          ECR_REPO: 'graceful-nginx'
+        run: |
+          IMAGE_TAG=$(echo ${{ github.ref }} | sed -e "s@refs/tags/release/graceful-nginx/@@g")
+          docker build -t ${{ steps.ecr.outputs.registry }}/$ECR_REPO:$IMAGE_TAG ./graceful-nginx
+          docker push ${{ steps.ecr.outputs.registry }}/$ECR_REPO:$IMAGE_TAG
