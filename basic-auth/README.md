@@ -20,6 +20,9 @@ basic認証をかけるproxyのimageです
 - PROXY_PASS
     - nginx設定、locationディレクティブのproxy_passに入る値です
     - default: http://localhost/
+- HEALTH_PATH
+    - basic認証なしで通るヘルスチェクエンドポイントのパスです（ただステータス200が返るだけ）
+    - default: /proxy-healthz
 
 ## manifest例
 
@@ -49,6 +52,8 @@ spec:
               value: hogehoge
             - name: PROXY_PASS
               value: http://localhost:9000/
+            - name: HEALTH_PATH
+              value: /live
 ```
 
 実際はUSERNAMEやPASSWORDはsecretに設定して`envFrom.secretRef`で渡す想定です
