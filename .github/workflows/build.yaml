@@ -96,3 +96,26 @@ jobs:
           IMAGE_TAG=$(echo ${{ github.ref }} | sed -e "s@refs/tags/release/graceful-nginx/@@g")
           docker build -t ${{ steps.ecr.outputs.registry }}/$ECR_REPO:$IMAGE_TAG ./graceful-nginx
           docker push ${{ steps.ecr.outputs.registry }}/$ECR_REPO:$IMAGE_TAG
+  build-nginx-lua:
+    runs-on: ubuntu-latest
+    name: build-nginx-lua
+    if: contains(github.ref, 'release/nginx-lua')
+    steps:
+      - name: checkout
+        uses: actions/checkout@v1
+      - name: aws configure
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-1
+      - name: login ecr
+        id: ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      - name: build and push
+        env:
+          ECR_REPO: 'nginx-lua'
+        run: |
+          IMAGE_TAG=$(echo ${{ github.ref }} | sed -e "s@refs/tags/release/nginx-lua/@@g")
+          docker build --build-arg ENABLED_MODULES="ndk lua" -t ${{ steps.ecr.outputs.registry }}/$ECR_REPO:$IMAGE_TAG ./nginx-lua
+          docker push ${{ steps.ecr.outputs.registry }}/$ECR_REPO:$IMAGE_TAG
